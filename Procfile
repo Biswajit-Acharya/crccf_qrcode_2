@@ -1,0 +1,1 @@
+web: gunicorn crccf_qrcode_2.wsgi:application

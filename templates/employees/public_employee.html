@@ -1,0 +1,83 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Employee Verification | CR Cyber Crime Foundation</title>
+    <link rel="stylesheet" href="{% static 'employees/css/styles.css' %}">
+</head>
+<body class="verification-body">
+    <main class="verification-page">
+        <section class="verification-card" aria-live="polite">
+            <div class="verify-brand">
+                <span class="brand-mark">CR</span>
+                <div>
+                    <strong>CR Cyber Crime Foundation</strong>
+                    <small>Employee Verification Portal</small>
+                </div>
+            </div>
+
+            {% if employee %}
+                <div class="notice online">Verified employee details loaded from the live database.</div>
+                <div class="employee-public-card">
+                    <div class="public-head">
+                        {% if employee.profile_photo %}
+                            <img class="profile-photo" src="{{ employee.profile_photo.url }}" alt="{{ employee.full_name }}">
+                        {% else %}
+                            <div class="profile-photo placeholder" aria-hidden="true">{{ employee.full_name|first }}</div>
+                        {% endif %}
+                        <div>
+                            <div class="section-kicker">Verified Employee</div>
+                            <h1>{{ employee.full_name }}</h1>
+                            <p>{{ employee.designation }}</p>
+                        </div>
+                    </div>
+
+                    <dl class="detail-grid">
+                        <div>
+                            <dt>Employee ID</dt>
+                            <dd>{{ employee.employee_id }}</dd>
+                        </div>
+                        <div>
+                            <dt>Department</dt>
+                            <dd>{{ employee.department }}</dd>
+                        </div>
+                        <div>
+                            <dt>Phone</dt>
+                            <dd>{{ employee.phone }}</dd>
+                        </div>
+                        <div>
+                            <dt>Email</dt>
+                            <dd>{{ employee.email }}</dd>
+                        </div>
+                        <div>
+                            <dt>Company</dt>
+                            <dd>{{ employee.company_name }}</dd>
+                        </div>
+                        <div>
+                            <dt>Joining Date</dt>
+                            <dd>{{ employee.joining_date }}</dd>
+                        </div>
+                        <div>
+                            <dt>Status</dt>
+                            <dd>{{ employee.status }}</dd>
+                        </div>
+                        <div>
+                            <dt>Last Updated</dt>
+                            <dd>{{ employee.updated_at }}</dd>
+                        </div>
+                        <div class="wide">
+                            <dt>Company Address</dt>
+                            <dd>{{ employee.company_address }}</dd>
+                        </div>
+                    </dl>
+                </div>
+            {% else %}
+                <div class="notice inactive">Employee verification unavailable.</div>
+                <div class="employee-public-card text-verification">{{ not_found_message }}</div>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>

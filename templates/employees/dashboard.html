@@ -1,0 +1,69 @@
+{% extends "employees/base.html" %}
+
+{% block title %}Employee Dashboard | CR Cyber Crime Foundation{% endblock %}
+
+{% block content %}
+<section class="dashboard-head">
+    <div>
+        <div class="section-kicker">Admin Dashboard</div>
+        <h1>Employee Records</h1>
+        <p class="muted">Downloaded QR codes contain only the permanent public employee URL.</p>
+    </div>
+    <a class="primary-button" href="{% url 'employee_create' %}">Add Employee</a>
+</section>
+
+<form class="toolbar" method="get">
+    <input type="search" name="q" value="{{ query }}" placeholder="Search employee ID or name">
+    <select name="status">
+        <option value="">All statuses</option>
+        <option value="Active" {% if status == "Active" %}selected{% endif %}>Active</option>
+        <option value="Inactive" {% if status == "Inactive" %}selected{% endif %}>Inactive</option>
+    </select>
+    <button class="secondary-button" type="submit">Filter</button>
+</form>
+
+<section class="info-note">
+    <strong>QR behavior:</strong>
+    Each QR opens the employee's permanent public URL and the page reads the latest details from the live database.
+    Editing employee details does not require regenerating the QR.
+</section>
+
+<section class="table-card">
+    <div class="responsive-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Name</th>
+                    <th>Designation</th>
+                    <th>Department</th>
+                    <th>Status</th>
+                    <th>Public URL</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in employees %}
+                    <tr>
+                        <td>{{ employee.employee_id }}</td>
+                        <td>{{ employee.full_name }}</td>
+                        <td>{{ employee.designation }}</td>
+                        <td>{{ employee.department }}</td>
+                        <td><span class="status-pill {{ employee.status|lower }}">{{ employee.status }}</span></td>
+                        <td><a href="{{ employee.get_public_url }}" target="_blank" rel="noopener">{{ employee.get_public_url }}</a></td>
+                        <td class="actions">
+                            <a href="{% url 'employee_qr_download' employee.pk %}">QR</a>
+                            <a href="{% url 'employee_update' employee.pk %}">Edit</a>
+                            <a class="danger-link" href="{% url 'employee_delete' employee.pk %}">Delete</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7" class="empty-state">No employee records found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

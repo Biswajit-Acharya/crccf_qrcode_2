@@ -1,0 +1,28 @@
+{% extends "employees/base.html" %}
+
+{% block title %}{{ title }} | CR Cyber Crime Foundation{% endblock %}
+
+{% block content %}
+<section class="form-shell">
+    <div class="section-kicker">Employee Registry</div>
+    <h1>{{ title }}</h1>
+    <p class="form-note">
+        Saving this form updates the main employee record. Existing QR codes keep the same public URL and show the latest database details on the next scan.
+    </p>
+    <form method="post" enctype="multipart/form-data" class="employee-form">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            <label class="{% if field.name == 'company_address' %}span-2{% endif %}">
+                {{ field.label }}
+                {{ field }}
+                {{ field.errors }}
+            </label>
+        {% endfor %}
+        <div class="form-actions span-2">
+            <a class="ghost-button" href="{% url 'dashboard' %}">Cancel</a>
+            <button class="primary-button" type="submit">Save Employee</button>
+        </div>
+    </form>
+</section>
+{% endblock %}
